@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/Projetos/principal.css" />
+    </head>
+    <body>
+        <div class="atividades">
+            {%if erro %}
+            {{erro}}
+            {%endif%}
+            {% if lista_estudos %}
+            <form action="{% url 'Projetos:horarios_manual'%}" method="post">
+                {% csrf_token %}
+                <table class="estudos" border="1">
+                    <tr>
+                        <th>id</th>
+                        <th>Materia</th>
+                        <th>Hora</th>
+                        <th>Apagar</th>
+                    </tr>
+                    {%for x in lista_estudos%}
+                    <tr>
+                        {%for y in x|safeseq%}
+                        <th>{{y}}</th>
+                        {%endfor%}
+                        <th><input type="checkbox" name="apagar" value="{{x.0}}"></th> <!-- x.0 = pega o primeiro elemento da lista x, que equivale ao id do horario-->
+                    </tr>
+                    {%endfor%}
+                </table>
+                <input type="submit" value="apagar selecionados">
+                {% endif %}
+            </form>
+        </div>
+        <div class="editar_horario">
+            <form method="post" action="{% url 'Projetos:horarios_manual'%}">
+                <h1>Editar Horario</h1>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="enviar" />
+            </form>
+        </div>
+        <h3>Para criar um novo Horario de Estudo, preencha os 3 campos corretamente</h3>
+        <a class="btn btn-primary" href="{% url 'Projetos:principal'%}">Voltar para a tela inicial</a><br /><br />
+    </body>
+</html>

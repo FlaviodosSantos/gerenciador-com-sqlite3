@@ -1,0 +1,85 @@
+{# yonetim/templates/list.html #}
+{% load render_table from django_tables2 %}
+{% load static %}
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="../static/Projetos/principal.css" />
+</head>
+<body>
+    <div class="container">
+        {%if atividades %}
+        <table class="atividades" border="1">
+            <tr>
+                <th>Materia</th>
+                <th>Conteudo</th>
+            </tr>
+            {%for x in lista_atividades%}
+            <tr>
+                {%for y in x|safeseq%}
+                <th>{{y}}</th>
+                {%endfor%}
+            </tr>
+            {%endfor%}
+            <a class="atividades" href="{% url 'Projetos:editar_atividades'%}">Editar atividades</a>
+            <br />
+        </table>
+        {% else %}
+        <p>nao foi encontrado atividades cadastradas</p>
+        {% endif %}
+        <div class="nova_atividade">
+            <form method="post">
+                <h1>Adicionar atividade</h1>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+        {% if lista_estudos %}
+        <table class="estudos" border="1">
+            <tr>
+                <th>Materia</th>
+                <th>Hora</th>
+            </tr>
+            {%for x in lista_estudos%}
+            <tr>
+                {%for y in x|safeseq%}
+                <th>{{y}}</th>
+                {%endfor%}
+            </tr>
+            {%endfor%}
+        </table>
+        {% else %}
+        <p>Sem horario de estudo cadastrado</p>
+        <form action="{% url 'Projetos:horarios_auto'%}">
+            <input type="radio" name="escolha" id="revisar" value="revisar">
+            <label>Revisar os assuntos estudados</label><br>
+            <input type="radio" name="escolha" id="estudar" value="estudar">
+            <label>Estudar os assuntos antes da aula</label><br>
+            <input type="submit" value="Criar um horario automatico">
+        </form>
+        {%if erro%}
+        {{erro}}
+        {%endif%}
+        <a class="btn btn-primary" href="{% url 'Projetos:horarios_manual'%}">Criar um horario Manualmente</a><br /><br />
+        {% endif %}
+        <a class="btn btn-primary" href="{% url 'Projetos:horarios_manual'%}">Editar horario de estudo</a><br />
+        <table border="1" class="materias">
+            <tr>
+                <th>Nome</th>
+                <th>Horario</th>
+            </tr>
+            {% if materias %}
+            {% for m in materias%}
+            <tr>
+                <td>{{m.nome}}</td>
+                <td>{{m.horario}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            <a class="btn btn-primary" href="{% url 'Projetos:apagar_horarios'%}">Apagar todos os meus horarios de estudo</a>
+            <br />
+        </table>
+    </div>
+</body>
+</html>
