@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'locallibrary.wsgi.application'
 DATABASES = {  
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'dbteste.db'),
+        'NAME': os.path.join(BASE_DIR, 'trabalhobd2019_2'),
     }
 }
 
@@ -120,3 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = '/Projetos/'
+LOGOUT_REDIRECT_URL = '/account/login'

@@ -2,7 +2,7 @@
 import sqlite3
 
 # conectando...
-conn = sqlite3.connect('dbteste.db')
+conn = sqlite3.connect('trabalhobd2019_2')
 # definindo um cursor
 cursor = conn.cursor()
 
@@ -34,7 +34,9 @@ create table horarioestudo(
 	id int auto_increment primary key,
 	aluno int not null,
     materias int not null,
-    horario varchar(9) 
+    horario varchar(9),
+    foreign key (aluno) references usuario(id), 
+    foreign key (materias) references materia(id)
 );
 """)
 
@@ -42,7 +44,9 @@ cursor.execute("""
 create table gradeestudo( 
 	id integer primary key AUTOINCREMENT,
 	aluno int not null,
-    materias int not null
+    materias int not null,
+    foreign key (aluno) references usuario(id),
+    foreign key (materias) references materia(id)
 );
 """)
 
@@ -51,31 +55,9 @@ create table atividade(
 	id integer primary key AUTOINCREMENT,
 	aluno int not null,
     materia int,
-    conteudo varchar(255)
+    conteudo varchar(255),
+    foreign key (aluno) references usuario(id),
+    foreign key (materia) references materia(id)
 );
 """)
-
-'''
-
-cursor.execute("""
-alter table gradeestudo
-	ADD CONSTRAINT aluno foreign key (aluno) references usuario(id),
-    add constraint materia foreign key (materias) references materia(id);
-
-""")
-
-cursor.execute("""
-alter table horarioestudo
-	add constraint aluno foreign key (aluno) references usuario(id),
-    add constraint materio foreign key (materias) references materia(id);
-""")
-
-cursor.execute("""
-alter table atividade
-	add constraint aluno foreign key (aluno) references usuario(id),
-    add constraint materias foreign key (materia) references materia(id);
-""")
-
-'''
-
 
