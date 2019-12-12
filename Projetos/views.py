@@ -3,7 +3,9 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.views import generic
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import atividades_form, horarios_form
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/account/login')
 def Principal(request):
     usuario = Usuario.objects.get(id=1)
 
@@ -39,6 +41,7 @@ def Principal(request):
             sla = []
     return render(request, 'Projetos/principal.html', locals())
 
+@login_required(login_url='/account/login')
 def horarios_auto(request):
     usuario = Usuario.objects.get(id=1)
     try:
@@ -79,6 +82,7 @@ def horarios_auto(request):
         erro = "Você não fez uma escolha"
     return Principal(request)
 
+@login_required(login_url='/account/login')
 def horarios_manual(request):
     usuario = Usuario.objects.get(id=1)
     estudos = Horarioestudo.objects.filter(aluno = usuario).values_list('id', 'materias', 'horario').order_by('horario')
@@ -149,6 +153,7 @@ def horarios_manual(request):
     
     return render(request, 'Projetos/horarios.html', locals())
 
+@login_required(login_url='/account/login')
 def apagar_horarios(request):
     usuario = Usuario.objects.get(id=1)
     estudos = Horarioestudo.objects.filter(aluno = usuario)
@@ -157,6 +162,7 @@ def apagar_horarios(request):
         x.delete()
     return Principal(request)
 
+@login_required(login_url='/account/login')
 def editar_atividades(request):
     lista_atividades = []
     sla = []
